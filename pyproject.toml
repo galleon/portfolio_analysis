@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "portfolio-analysis"
+version = "0.1.0"
+description = "A tiny portfolio management system"
+authors = ["Guillaume Alleon <guillaume.alleon@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [
+    { include = "porty", from = "." },
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.scripts]
+report = "porty.cli.report:run"
+pcost = "porty.cli.pcost:run"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
