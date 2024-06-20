@@ -1,3 +1,5 @@
+import argparse
+
 import fileparse
 from stock import Stock
 import tableformat
@@ -9,8 +11,8 @@ def read_portfolio(filename):
     name, shares, and price.
     '''
     with open(filename) as lines:
-        portdicts = fileparse.parse_csv(lines, 
-                                        select=['name','shares','price'], 
+        portdicts = fileparse.parse_csv(lines,
+                                        select=['name','shares','price'],
                                         types=[str,int,float])
 
     portfolio = [ Stock(d['name'], d['shares'], d['price']) for d in portdicts ]
@@ -49,7 +51,7 @@ def portfolio_report(portfoliofile, pricefile, fmt='txt'):
     '''
     Make a stock report given portfolio and price data files.
     '''
-    # Read data files 
+    # Read data files
     portfolio = read_portfolio(portfoliofile)
     prices = read_prices(pricefile)
 
@@ -60,11 +62,14 @@ def portfolio_report(portfoliofile, pricefile, fmt='txt'):
     formatter = tableformat.create_formatter(fmt)
     print_report(report, formatter)
 
-def main(args):
-    if len(args) != 4:
-        raise SystemExit('Usage: %s portfile pricefile format' % args[0])
-    portfolio_report(args[1], args[2], args[3])
+def run():
+    parser = argparse.ArgumentParser(description="Display a stock report.")
+    parser.add_argument("--portfolio", type=str, help="Path to the portfolio file.", default="data/portfolio.csv")
+    parser.add_argument("--prices", type=str, help="Path to the price file.", default="data/prices.csv")
+    parser.add_argument("--format", type=str, help="Output format.", default="txt")
+    args = parser.parse_args()
+
+    portfolio_report(args.portfolio, args.prices, args.format)
 
 if __name__ == '__main__':
-    import sys
-    main(sys.argv)
+    run()
