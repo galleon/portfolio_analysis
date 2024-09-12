@@ -1,30 +1,38 @@
+from typing import Any, Callable, Dict, Iterable, List, Tuple, Union
 import csv
 
-def parse_csv(lines, select=None, types=None, has_headers=True, delimiter=',', silence_errors=False):
-    '''
+def parse_csv(
+    lines,
+    select: List[str] | None = None,
+    types: List[Callable[[str], Any]] | None = None,
+    has_headers: bool = True,
+    delimiter: str = ',',
+    silence_errors: bool = False
+) -> Iterable[Dict[str, Any] | Tuple[str, float]]:
+    """
     Parse a CSV file into a list of records with type conversion.
-    '''
+    """
     if select and not has_headers:
         raise RuntimeError('select requires column headers')
 
     rows = csv.reader(lines, delimiter=delimiter)
 
     # Read the file headers (if any)
-    headers = next(rows) if has_headers else []
+    headers: List[str] = next(rows) if has_headers else []
 
     # If specific columns have been selected, make indices for filtering and set output columns
     if select:
-        indices = [ headers.index(colname) for colname in select ]
+        indices = [headers.index(colname) for colname in select]
         headers = select
 
-    records = []
+    records: List[Dict[str, Any] | Tuple[str, float]] = []
     for rowno, row in enumerate(rows, 1):
-        if not row:     # Skip rows with no data
+        if not row:  # Skip rows with no data
             continue
 
         # If specific column indices are selected, pick them out
         if select:
-            row = [ row[index] for index in indices]
+            row = [row[index] for index in indices]
 
         # Apply type conversion to the row
         if types:
@@ -37,10 +45,12 @@ def parse_csv(lines, select=None, types=None, has_headers=True, delimiter=',', s
                 continue
 
         # Make a dictionary or a tuple
+        record: Any = None
         if headers:
             record = dict(zip(headers, row))
         else:
             record = tuple(row)
+
         records.append(record)
 
     return records

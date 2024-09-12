@@ -1,0 +1,37 @@
+exclude = [
+    ".git",
+    ".venv",
+    ".vscode",
+    "build",
+    "dist",
+    "site-packages",
+    "venv",
+]
+
+# Same as Black.
+line-length = 88
+indent-width = 4
+
+# Assume Python 3.10
+target-version = "py310"
+
+[lint]
+select = ["E4", "E7", "E9", "F", "I", "N", "D"]
+ignore = []
+# "E4" checks for PEP 8 indentation errors
+# "E7" checks for PEP 8 line break errors
+# "E9" checks for PEP 8 whitespace errors
+# "F" checks for pyflakes issues (undefined variables, etc.)
+# "I" checks for import ordering (isort)
+# "N" checks for PEP 8 naming conventions
+# "D" checks for PEP 257 docstring conventions (pydocstyle)
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[format]
+quote-style = "double"

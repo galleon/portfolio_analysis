@@ -1,8 +1,8 @@
 class TableFormatter:
     def headings(self, headers):
-        '''
+        """
         Emit the table headers
-        '''
+        """
         raise NotImplementedError()
 
     def row(self, rowdata):
@@ -55,7 +55,7 @@ class HTMLTableFormatter(TableFormatter):
 class FormatError(Exception):
     pass
 
-def create_formatter(name):
+def createFormatter(name):
     '''
     Create an appropriate formatter given an output format name
     '''
